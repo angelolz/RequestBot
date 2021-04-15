@@ -29,7 +29,7 @@ import schedulers.ScheduledTasks;
 public class RequestBot
 {
 	private static String prefix = "r!";
-	private static String version = "1.0.1";
+	private static String version = "1.0.2";
 	private static String token, ownerId, playlistId, clientId, clientSecret;
 	private static Logger logger;
 	private static SpotifyApi spotifyApi;
@@ -81,7 +81,7 @@ public class RequestBot
 					.setRedirectUri(SpotifyHttpManager.makeUri("https://angelolz.dev"))
 					.build();
 
-			authorizationCodeUriRequest = spotifyApi.authorizationCodeUri().scope("playlist-modify-private playlist-read-private").build();
+			authorizationCodeUriRequest = spotifyApi.authorizationCodeUri().scope("playlist-modify-private playlist-modify-public playlist-read-private playlist-read-collaborative").build();
 			URI uri = authorizationCodeUriRequest.execute();
 			
 			Scanner kbd = new Scanner(System.in);
