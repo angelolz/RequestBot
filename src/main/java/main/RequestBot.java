@@ -29,8 +29,8 @@ import schedulers.ScheduledTasks;
 public class RequestBot
 {
 	private static String prefix = "r!";
-	private static String version = "1.0";
-	private static String token, ownerId, playlistId;
+	private static String version = "1.0.1";
+	private static String token, ownerId, playlistId, clientId, clientSecret;
 	private static Logger logger;
 	private static SpotifyApi spotifyApi;
 	private static AuthorizationCodeUriRequest authorizationCodeUriRequest;
@@ -50,6 +50,8 @@ public class RequestBot
 		token = prop.getProperty("bot_token");
 		ownerId = prop.getProperty("owner_id");
 		playlistId = prop.getProperty("playlist_id");
+		clientId = prop.getProperty("client_id");
+		clientSecret = prop.getProperty("client_secret");
 
 		//create command builders and listeners
 		EventWaiter waiter = new EventWaiter();
@@ -74,8 +76,8 @@ public class RequestBot
 		try 
 		{
 			spotifyApi = new SpotifyApi.Builder()
-					.setClientId("8a4f9398b0c6474caeafa4b7b49c0b23")
-					.setClientSecret("d747f9c2d994413daad93efff0b0e6ca")
+					.setClientId(clientId)
+					.setClientSecret(clientSecret)
 					.setRedirectUri(SpotifyHttpManager.makeUri("https://angelolz.dev"))
 					.build();
 

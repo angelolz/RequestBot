@@ -29,7 +29,7 @@ public class Add extends Command
 	public Add()
 	{
 		this.name = "Add";
-		this.help = "Add a song to the request playlist";
+		this.help = "Add a song to the request playlist.";
 		this.cooldown = 5;
 	}
 	@Override
@@ -144,6 +144,11 @@ public class Add extends Command
 					event.reply(":x: | That's not a valid album.");
 				}
 			}
+		}
+		
+		else
+		{
+			event.reply(":x: | That's not a valid Spotify track link or album link.");
 		}
 	}
 
