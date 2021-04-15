@@ -19,7 +19,7 @@
 		<dependency>
 			<groupId>net.dv8tion</groupId>
 			<artifactId>JDA</artifactId>
-			<version>4.2.0_236</version>
+			<version>4.2.0_247</version>
 			<exclusions>
 				<exclusion>
 					<groupId>club.minnced</groupId>
@@ -30,7 +30,7 @@
 		<dependency>
 			<groupId>com.jagrosh</groupId>
 			<artifactId>jda-utilities</artifactId>
-			<version>3.0.4</version>
+			<version>3.0.5</version>
 			<scope>compile</scope>
 			<type>pom</type>
 		</dependency>
@@ -42,7 +42,7 @@
 		<dependency>
 			<groupId>se.michaelthelin.spotify</groupId>
 			<artifactId>spotify-web-api-java</artifactId>
-			<version>6.5.1</version>
+			<version>6.5.4</version>
 		</dependency>
 	</dependencies>
 
