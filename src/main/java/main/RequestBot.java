@@ -18,7 +18,6 @@ import com.github.redouane59.twitter.signature.TwitterCredentials;
 import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.TwitchClientBuilder;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
-import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.SpotifyHttpManager;
 import com.wrapper.spotify.model_objects.credentials.AuthorizationCodeCredentials;
@@ -160,7 +159,6 @@ public class RequestBot
 
 			/*   discord bot   */
 			//create command builders and listeners
-			EventWaiter waiter = new EventWaiter();
 			CommandClientBuilder client = new CommandClientBuilder();
 
 			//discord client config
@@ -180,7 +178,7 @@ public class RequestBot
 			JDABuilder.createDefault(botToken)
 			.setStatus(OnlineStatus.DO_NOT_DISTURB)
 			.setActivity(Activity.playing("loading!! | h!help"))
-			.addEventListeners(waiter, client.build())
+			.addEventListeners(client.build())
 			.build();
 
 			//init timed tasks

@@ -1,0 +1,12 @@
+CREATE DATABASE RequestBot;
+CREATE TABLE Tweets (
+	tweet_id BIGINT NOT NULL
+);
+
+CREATE TABLE Requests (
+	uri VARCHAR(25) NOT NULL,
+    isTrack TINYINT NOT NULL,
+    addedBy VARCHAR(40) NOT NULL,
+    source VARCHAR(7) NOT NULL,
+    time_added DATETIME DEFAULT CURRENT_TIMESTAMP()
+);

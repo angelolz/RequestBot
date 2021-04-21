@@ -16,28 +16,12 @@ public class SpotifyLink
 
 	public boolean validLink()
 	{
-		if(m.find())
-		{
-			return true;
-		}
-
-		else
-		{
-			return false;
-		}
+		return m.find();
 	}
 
 	public boolean isTrack()
 	{
-		if(m.group(1).equalsIgnoreCase("track"))
-		{
-			return true;
-		}
-		
-		else
-		{
-			return false;
-		}
+		return m.group(1).equalsIgnoreCase("track");
 	}
 	
 	public String getUri()

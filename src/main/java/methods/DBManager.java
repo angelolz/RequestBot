@@ -9,6 +9,7 @@ import main.RequestBot;
 
 public class DBManager
 {
+	//keeps track of the add song requests from multiple sources
 	public static void addRequest(String uri, boolean isTrack, String addedBy, String source) throws SQLException
 	{
 		String sql = "INSERT INTO Requests (uri, isTrack, addedBy, source) VALUES (?,?,?,?);";
@@ -36,6 +37,7 @@ public class DBManager
 		}
 	}
 	
+	//makes sure that the tweet does not get processed again by the bot to avoid duplicates to the playlist
 	public static boolean tweetExists(String id) throws SQLException
 	{
 		String sql = "SELECT * FROM Tweets WHERE tweet_id = ?;";

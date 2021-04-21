@@ -33,9 +33,9 @@ public class ChatListener
 		String[] args = event.getMessage().split("\\s+");
 		TwitchChat chat = RequestBot.getTwitchClient().getChat();
 
-		if(canUse(event.getUser().getName()))
+		if(args[0].equalsIgnoreCase("r!add"))
 		{
-			if(args[0].equalsIgnoreCase("r!add"))
+			if(canUse(event.getUser().getName()))
 			{
 				cooldown.put(event.getUser().getName(), System.currentTimeMillis());
 
@@ -96,7 +96,7 @@ public class ChatListener
 
 						else
 						{
-							chat.sendMessage("angelolz1", ":x: | That's not a valid Spotify track link or album link.");
+							chat.sendMessage("angelolz1", "@" + event.getUser().getName() + ", that's not a valid Spotify track link or album link.");
 						}
 					}
 
@@ -157,6 +157,7 @@ public class ChatListener
 		}
 	}
 
+	//puts a 5 second cooldown on twitch commands
 	private boolean canUse(String userName)
 	{
 		Long time = cooldown.get(userName);
