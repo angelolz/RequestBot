@@ -11,6 +11,7 @@ public class View extends Command
 		this.help = "View the requested songs playlist.";
 		this.cooldown = 5;
 	}
+
 	@Override
 	protected void execute(CommandEvent event)
 	{

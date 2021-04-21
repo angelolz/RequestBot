@@ -8,7 +8,7 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 public class Ping extends Command
 {
 	protected static int commandCount;
-	
+
 	public Ping()
 	{
 		this.aliases = new String[] {"pong"};
@@ -16,14 +16,14 @@ public class Ping extends Command
 		this.guildOnly = true;
 		this.help = ":ping_pong: Pong!";
 		this.name = "ping";
-		
+
 	}
 
 	@Override
 	protected void execute(CommandEvent event)
 	{
 		commandCount++;
-		
+
 		MessageChannel channel = event.getChannel();
 		String author = event.getAuthor().getAsMention();
 		long time = System.currentTimeMillis();
@@ -44,7 +44,7 @@ public class Ping extends Command
 					});
 		}
 	}
-	
+
 	public static int getCommandCount()
 	{
 		return commandCount;
