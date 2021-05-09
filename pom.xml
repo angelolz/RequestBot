@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.angelolz.requestbot</groupId>
 	<artifactId>RequestBot</artifactId>
-	<version>1.1</version>
+	<version>1.1.1</version>
 	<name>RequestBot</name>
 	<description>pleaes give angel requests</description>
 	<repositories>

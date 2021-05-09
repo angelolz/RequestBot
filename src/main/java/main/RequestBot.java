@@ -26,10 +26,7 @@ import com.wrapper.spotify.requests.authorization.authorization_code.Authorizati
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import commands.Add;
-import commands.Help;
-import commands.Ping;
-import commands.View;
+import commands.*;
 import listeners.ChatListener;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -52,7 +49,7 @@ public class RequestBot
 
 	//discord
 	private static String prefix = "r!";
-	private static String version = "1.1";
+	private static String version = "1.1.1";
 	private static String botToken, ownerId;
 
 	//twitter
@@ -172,7 +169,8 @@ public class RequestBot
 			client.addCommands( new Help(),
 					new Ping(),
 					new Add(),
-					new View());
+					new View(),
+					new Set());
 
 			//discord bot builder
 			JDABuilder.createDefault(botToken)

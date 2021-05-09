@@ -56,7 +56,7 @@ public class Add extends Command
 					if(SpotifyManager.addAlbumToPlaylist(album))
 					{
 						String artists = SpotifyManager.getArtistsString(album.getArtists());
-						
+
 						int numOfTracks = SpotifyManager.getPlaylistTrackTotal();
 
 						event.reply(String.format("Successfully added the album **%s** by *%s* to the playlist! "
@@ -97,16 +97,25 @@ public class Add extends Command
 
 		catch (SpotifyWebApiException e)
 		{
-			RequestBot.getLogger().error("Spotify API Error: " + e.toString());
-
-			if(link.isTrack())
+			//if someone puts an invalid spotify track/album
+			if(e.toString().contains("invalid id"))
 			{
-				event.reply(":x: | That's not a valid track.");
+				if(link.isTrack())
+				{
+					event.reply(":x: | That's not a valid track.");
+				}
+
+				else
+				{
+					event.reply(":x: | That's not a valid album.");
+				}
 			}
 
+			//for other spotify api exceptions
 			else
 			{
-				event.reply(":x: | That's not a valid album.");
+				event.reply(":x: | Sorry, there was a problem in adding this to the playlist!");
+				RequestBot.getLogger().error("Spotify API Error: " + e.toString());
 			}
 		}
 

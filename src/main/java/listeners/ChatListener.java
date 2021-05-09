@@ -20,6 +20,9 @@ import methods.SpotifyManager;
 public class ChatListener 
 {
 	private HashMap<String, Long> cooldown;
+	
+	//**CHANGE THIS FOR YOUR OWN CHANNEL**//
+	private static final String CHANNEL = "angelolz1";
 
 	public ChatListener(SimpleEventHandler eventHandler)
 	{
@@ -42,7 +45,7 @@ public class ChatListener
 				if(args.length == 1)
 				{
 					String message = String.format("@%s, you have to send a spotify song or album link!", event.getUser().getName());
-					RequestBot.getTwitchClient().getChat().sendMessage("angelolz1", message);
+					RequestBot.getTwitchClient().getChat().sendMessage(CHANNEL, message);
 				}
 
 				else
@@ -63,7 +66,7 @@ public class ChatListener
 								String message = String.format("@%s, successfully added the track %s by %s to the playlist! "
 										+ "There are %s songs in the playlist right now.", event.getUser().getName(), track.getName(),
 										artists, numOfTracks > 100 ? "more than 100" : String.valueOf(numOfTracks));
-								chat.sendMessage("angelolz1", message);
+								chat.sendMessage(CHANNEL, message);
 
 								DBManager.addRequest(link.getUri(), true, event.getChannel().getName(), "twitch");
 							}
@@ -81,14 +84,14 @@ public class ChatListener
 											+ "There are %s songs in the playlist right now. "
 											+ "Use `r!view` to see the playlist!",
 											event.getUser().getName(), album.getName(), artists, numOfTracks > 100 ? "more than 100" : String.valueOf(numOfTracks));
-									chat.sendMessage("angelolz1", message);
+									chat.sendMessage(CHANNEL, message);
 
 									DBManager.addRequest(link.getUri(), false, event.getUser().getName(), "twitch");
 								}
 
 								else
 								{
-									chat.sendMessage("angelolz1", "@" + event.getUser().getName() + ", you have an album with more than 20 songs! "
+									chat.sendMessage(CHANNEL, "@" + event.getUser().getName() + ", you have an album with more than 20 songs! "
 											+ "How about you just pick a handful that you think would be best to listen to?");
 								}
 							}
@@ -96,7 +99,7 @@ public class ChatListener
 
 						else
 						{
-							chat.sendMessage("angelolz1", "@" + event.getUser().getName() + ", that's not a valid Spotify track link or album link.");
+							chat.sendMessage(CHANNEL, "@" + event.getUser().getName() + ", that's not a valid Spotify track link or album link.");
 						}
 					}
 
@@ -105,27 +108,36 @@ public class ChatListener
 						RequestBot.getLogger().error("IOException/ParseException Error: " + e.toString());
 						if(link.isTrack())
 						{
-							chat.sendMessage("angelolz1", "@" + event.getUser().getName() + ", there was an error in adding your track.");
+							chat.sendMessage(CHANNEL, "@" + event.getUser().getName() + ", there was an error in adding your track.");
 						}
 
 						else
 						{
-							chat.sendMessage("angelolz1", "@" + event.getUser().getName() + ", there was an error in adding your album.");
+							chat.sendMessage(CHANNEL, "@" + event.getUser().getName() + ", there was an error in adding your album.");
 						}
 					}
 
 					catch (SpotifyWebApiException e)
 					{
-						RequestBot.getLogger().error("Spotify API Error: " + e.toString());
-
-						if(link.isTrack())
+						//if someone puts an invalid spotify track/album
+						if(e.toString().contains("invalid id"))
 						{
-							chat.sendMessage("angelolz1", "@" + event.getUser().getName() + ", that's not a valid track.");
+							if(link.isTrack())
+							{
+								chat.sendMessage(CHANNEL, "@" + event.getUser().getName() + ", that's not a valid track.");
+							}
+							
+							else
+							{
+								chat.sendMessage(CHANNEL, "@" + event.getUser().getName() + ", that's not a valid album.");
+							}
 						}
-
+						
+						//for other spotify api exceptions
 						else
 						{
-							chat.sendMessage("angelolz1", "@" + event.getUser().getName() + ", that's not a valid album.");
+							RequestBot.getLogger().error("Spotify API Error: " + e.toString());
+							chat.sendMessage(CHANNEL, "Sorry, there was an error in adding this to the playlist!");
 						}
 					}
 
@@ -146,7 +158,7 @@ public class ChatListener
 				{
 					String message = String.format("@%s, there are %s songs in the playlist. You can view the playlist here: https://open.spotify.com/playlist/%s",
 							event.getUser().getName(), String.valueOf(SpotifyManager.getPlaylistTrackTotal()), RequestBot.getPlaylistId());
-					RequestBot.getTwitchClient().getChat().sendMessage("angelolz1", message);
+					RequestBot.getTwitchClient().getChat().sendMessage(CHANNEL, message);
 				} 
 
 				catch (ParseException | SpotifyWebApiException | IOException e)
