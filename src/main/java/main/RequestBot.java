@@ -49,7 +49,7 @@ public class RequestBot
 
 	//discord
 	private static String prefix = "r!";
-	private static String version = "1.1.1";
+	private static String version = "1.2";
 	private static String botToken, ownerId;
 
 	//twitter
