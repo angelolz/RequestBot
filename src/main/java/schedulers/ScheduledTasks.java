@@ -36,7 +36,7 @@ public class ScheduledTasks
 	Runnable refreshToken = () -> refreshToken();
 	Runnable checkTweets = () -> checkTweets();
 
-	ScheduledFuture<?> refreshTokenUpdater = refreshTokenScheduler.scheduleAtFixedRate(refreshToken, 1, 1, TimeUnit.HOURS);;
+	ScheduledFuture<?> refreshTokenUpdater = refreshTokenScheduler.scheduleAtFixedRate(refreshToken, 15, 30, TimeUnit.MINUTES);;
 	ScheduledFuture<?> tweetsCheckUpdater = tweetsCheckScheduler.scheduleAtFixedRate(checkTweets, 0, 5, TimeUnit.MINUTES);;
 
 	//gets a new refresh and access token every hour

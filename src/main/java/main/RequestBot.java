@@ -49,7 +49,7 @@ public class RequestBot
 
 	//discord
 	private static String prefix = "r!";
-	private static String version = "1.2";
+	private static String version = "1.2.1";
 	private static String botToken, ownerId;
 
 	//twitter
@@ -80,16 +80,16 @@ public class RequestBot
 		botToken = prop.getProperty("d_bot_token");
 		ownerId = prop.getProperty("d_owner_id");
 
-//		//twitter api properties
-//		twtAccessToken = prop.getProperty("twt_access_token");
-//		twtAccessTokenSecret = prop.getProperty("twt_access_token_secret");
-//		twtApiKey = prop.getProperty("twt_api_key");
-//		twtApiSecretKey = prop.getProperty("twt_api_secret_key");
-//
-//		//twitch api properties
-//		twchClientId = prop.getProperty("twch_client_id");
-//		twchClientId = prop.getProperty("twch_client_secret");
-//		twchOAuth = prop.getProperty("twch_oauth");
+		//twitter api properties
+		twtAccessToken = prop.getProperty("twt_access_token");
+		twtAccessTokenSecret = prop.getProperty("twt_access_token_secret");
+		twtApiKey = prop.getProperty("twt_api_key");
+		twtApiSecretKey = prop.getProperty("twt_api_secret_key");
+
+		//twitch api properties
+		twchClientId = prop.getProperty("twch_client_id");
+		twchClientId = prop.getProperty("twch_client_secret");
+		twchOAuth = prop.getProperty("twch_oauth");
 
 		try 
 		{
@@ -128,31 +128,31 @@ public class RequestBot
 			ds = new HikariDataSource(cfg);
 			logger.info("Connected to database successfully!");
 
-//			/*   twitter bot   */
-//			TwitterCredentials twtCred = TwitterCredentials.builder()
-//					.accessToken(twtAccessToken)
-//					.accessTokenSecret(twtAccessTokenSecret)
-//					.apiKey(twtApiKey)
-//					.apiSecretKey(twtApiSecretKey)
-//					.build();
-//
-//			twitterClient = new TwitterClient(twtCred);
-//			logger.info("Finished loading Twitter API.");
-//
-//			/*   twitch bot   */
-//			OAuth2Credential credential = new OAuth2Credential("twitch", twchOAuth);
-//			twitchClient = TwitchClientBuilder.builder()
-//					.withClientId(twchClientId)
-//					.withClientSecret(twchClientSecret)
-//					.withEnableHelix(true)
-//					.withEnableChat(true)
-//					.withChatAccount(credential)
-//					.build();
-//
-//			SimpleEventHandler eventHandler = twitchClient.getEventManager().getEventHandler(SimpleEventHandler.class);
-//			new ChatListener(eventHandler);
-//
-//			logger.info("Finished loading Twitch API and joined angelolz1's channel.");
+			/*   twitter bot   */
+			TwitterCredentials twtCred = TwitterCredentials.builder()
+					.accessToken(twtAccessToken)
+					.accessTokenSecret(twtAccessTokenSecret)
+					.apiKey(twtApiKey)
+					.apiSecretKey(twtApiSecretKey)
+					.build();
+
+			twitterClient = new TwitterClient(twtCred);
+			logger.info("Finished loading Twitter API.");
+
+			/*   twitch bot   */
+			OAuth2Credential credential = new OAuth2Credential("twitch", twchOAuth);
+			twitchClient = TwitchClientBuilder.builder()
+					.withClientId(twchClientId)
+					.withClientSecret(twchClientSecret)
+					.withEnableHelix(true)
+					.withEnableChat(true)
+					.withChatAccount(credential)
+					.build();
+
+			SimpleEventHandler eventHandler = twitchClient.getEventManager().getEventHandler(SimpleEventHandler.class);
+			new ChatListener(eventHandler);
+
+			logger.info("Finished loading Twitch API and joined angelolz1's channel.");
 
 			/*   discord bot   */
 			//create command builders and listeners

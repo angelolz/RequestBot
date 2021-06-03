@@ -35,7 +35,7 @@ public class Help extends Command
 		event.getJDA().retrieveUserById(ownerId).queue(
 				(user) -> {
 
-					embed.setTitle("Animal Crossing Bot");
+					embed.setTitle("Angel's Spotify Request bot");
 					embed.setColor(0x32CD32);
 					embed.setDescription("Here are a list of commands you can use!");
 					embed.setFooter("Created by " + user.getAsTag() + " | Version " + RequestBot.getBotVersion(), user.getAvatarUrl());
