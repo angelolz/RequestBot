@@ -19,7 +19,7 @@ public class Add extends Command
 {
 	public Add()
 	{
-		this.name = "Add";
+		this.name = "add";
 		this.help = "Add a song to the request playlist.";
 		this.cooldown = 5;
 	}

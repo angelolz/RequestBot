@@ -49,7 +49,7 @@ public class RequestBot
 
 	//discord
 	private static String prefix = "r!";
-	private static String version = "1.2.1";
+	private static String version = "1.3";
 	private static String botToken, ownerId;
 
 	//twitter
@@ -103,7 +103,7 @@ public class RequestBot
 					.setRedirectUri(SpotifyHttpManager.makeUri("https://angelolz.dev"))
 					.build();
 
-			authorizationCodeUriRequest = spotifyApi.authorizationCodeUri().scope("playlist-modify-private playlist-modify-public playlist-read-private playlist-read-collaborative").build();
+			authorizationCodeUriRequest = spotifyApi.authorizationCodeUri().scope("user-read-playback-state playlist-modify-private playlist-modify-public playlist-read-private playlist-read-collaborative").build();
 			URI uri = authorizationCodeUriRequest.execute();
 
 			//asks to authorize spotify account and input auth code to get access and refresh tokens
@@ -171,7 +171,8 @@ public class RequestBot
 					new Add(),
 					new View(),
 					new Set(),
-					new Recent());
+					new Recent(),
+					new NowPlaying());
 
 			//discord bot builder
 			JDABuilder.createDefault(botToken)
