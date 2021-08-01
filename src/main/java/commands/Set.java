@@ -18,7 +18,7 @@ import main.RequestBot;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 
-public class Set extends Command 
+public class Set extends Command
 {
 	public Set()
 	{
@@ -34,11 +34,12 @@ public class Set extends Command
 		if(event.getArgs().isEmpty())
 		{
 			event.getJDA().openPrivateChannelById(event.getClient().getOwnerId()).queue(
-					(dm) -> 
+					(dm) ->
 					{
 						AuthorizationCodeUriRequest authorizationCodeUriRequest = RequestBot.getSpotifyApi()
 								.authorizationCodeUri()
-								.scope("playlist-modify-private playlist-modify-public playlist-read-private playlist-read-collaborative")
+								.scope("playlist-modify-private playlist-modify-public playlist-read-private playlist-read-collaborative " +
+										"user-read-currently-playing user-read-playback-state")
 								.build();
 
 						URI uri = authorizationCodeUriRequest.execute();
@@ -51,11 +52,11 @@ public class Set extends Command
 					});
 
 			event
-			.getChannel()
-			.sendMessage(":white_check_mark: | A DM has been sent for further instructions!")
-			.delay(5, TimeUnit.SECONDS)
-			.flatMap(Message::delete)
-			.queue();
+					.getChannel()
+					.sendMessage(":white_check_mark: | A DM has been sent for further instructions!")
+					.delay(5, TimeUnit.SECONDS)
+					.flatMap(Message::delete)
+					.queue();
 		}
 
 		else
@@ -78,14 +79,14 @@ public class Set extends Command
 				api.setRefreshToken(refresh);
 
 				event.getChannel().sendMessage(":white_check_mark: | Successfully set your tokens.")
-				.delay(5, TimeUnit.SECONDS)
-				.flatMap(Message::delete)
-				.queue();
-			} 
+						.delay(5, TimeUnit.SECONDS)
+						.flatMap(Message::delete)
+						.queue();
+			}
 
-			catch (ParseException | SpotifyWebApiException | IOException e) 
+			catch (ParseException | SpotifyWebApiException | IOException e)
 			{
-				RequestBot.getLogger().error("Exception caught: {}", e.toString());
+				RequestBot.getLogger().error("Exception caught -- {}: {}", e.getClass().getName(), e.getMessage());
 				event.reply(":x: | There was an error in getting your tokens.");
 			}
 		}

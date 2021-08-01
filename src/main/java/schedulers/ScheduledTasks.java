@@ -1,19 +1,5 @@
 package schedulers;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.hc.core5.http.ParseException;
-
 import com.github.redouane59.twitter.dto.tweet.Tweet;
 import com.github.redouane59.twitter.dto.user.User;
 import com.wrapper.spotify.SpotifyApi;
@@ -22,44 +8,53 @@ import com.wrapper.spotify.model_objects.credentials.AuthorizationCodeCredential
 import com.wrapper.spotify.model_objects.specification.Album;
 import com.wrapper.spotify.model_objects.specification.Track;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeRefreshRequest;
-
 import main.RequestBot;
 import methods.DBManager;
 import methods.SpotifyLink;
 import methods.SpotifyManager;
+import org.apache.hc.core5.http.ParseException;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ScheduledTasks
 {
-	private final ScheduledExecutorService refreshTokenScheduler = Executors.newSingleThreadScheduledExecutor();
-	private final ScheduledExecutorService tweetsCheckScheduler = Executors.newSingleThreadScheduledExecutor();
-
-	Runnable refreshToken = () -> refreshToken();
-	Runnable checkTweets = () -> checkTweets();
-
-	ScheduledFuture<?> refreshTokenUpdater = refreshTokenScheduler.scheduleAtFixedRate(refreshToken, 15, 30, TimeUnit.MINUTES);;
-	ScheduledFuture<?> tweetsCheckUpdater = tweetsCheckScheduler.scheduleAtFixedRate(checkTweets, 0, 5, TimeUnit.MINUTES);;
+	public static void init()
+	{
+		Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(ScheduledTasks::refreshToken, 15, 30, TimeUnit.MINUTES);
+		Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(ScheduledTasks::checkTweets, 0, 5, TimeUnit.MINUTES);
+	}
 
 	//gets a new refresh and access token every hour
-	private void refreshToken()
+	private static void refreshToken()
 	{
 		try
 		{
 			SpotifyApi api = RequestBot.getSpotifyApi();
-			AuthorizationCodeRefreshRequest authorizationCodeRefreshRequest = api.authorizationCodeRefresh().build();
-			AuthorizationCodeCredentials authorizationCodeCredentials = authorizationCodeRefreshRequest.execute();
-
-			api.setAccessToken(authorizationCodeCredentials.getAccessToken());
+			if(!api.getAccessToken().isEmpty())
+			{
+				AuthorizationCodeRefreshRequest authorizationCodeRefreshRequest = api.authorizationCodeRefresh().build();
+				AuthorizationCodeCredentials authorizationCodeCredentials = authorizationCodeRefreshRequest.execute();
+				api.setAccessToken(authorizationCodeCredentials.getAccessToken());
+			}
 		}
 
 		catch(Exception e)
 		{
-			RequestBot.getLogger().error("Failed to get new token: ", e.toString());
+			RequestBot.getLogger().error("Failed to get new token: {}", e.toString());
 		}
 
 	}
 
-	//checks mentions from @angelolz1 every minute
-	private void checkTweets()
+	//check mentions from @angelolz1 every minute
+	private static void checkTweets()
 	{
 		try
 		{
@@ -74,7 +69,7 @@ public class ScheduledTasks
 					String realURL = "";
 
 					//checks for shortened twitter URL links
-					final String PATTERN = "http(?:s)?:\\/\\/(?:www)?t\\.co\\/([a-zA-Z0-9_]+)";
+					final String PATTERN = "http?://:(www)?t\\.co/(/zA-Z0-9_]+)";
 					Pattern p = Pattern.compile(PATTERN);
 					Matcher m = p.matcher(tweet.getText());
 
@@ -84,7 +79,7 @@ public class ScheduledTasks
 						HttpURLConnection con = (HttpURLConnection) new URL(m.group()).openConnection();
 						con.setInstanceFollowRedirects(false);
 						con.connect();
-						realURL = con.getHeaderField("Location").toString();
+						realURL = con.getHeaderField("Location");
 					}
 
 					SpotifyLink link = new SpotifyLink(realURL);
@@ -110,7 +105,7 @@ public class ScheduledTasks
 							User user = RequestBot.getTwitterClient().getUserFromUserId(tweet.getAuthorId());
 							Album album = SpotifyManager.getAlbum(link.getUri());
 
-							String message = "";
+							String message;
 							if(SpotifyManager.addAlbumToPlaylist(album))
 							{
 								message = String.format("@%s Added the album %s to the playlist! Thank you!", user.getName(),
@@ -121,7 +116,7 @@ public class ScheduledTasks
 							else
 							{
 								message = String.format("@%s Sorry, couldn't add this album to the playlist!"
-										+ "I only acccept albums that are 20 songs or less.",
+										+ "I only accept albums that are 20 songs or less.",
 										user.getName());
 							}
 
@@ -150,7 +145,6 @@ public class ScheduledTasks
 		catch(ParseException | IOException e)
 		{
 			RequestBot.getLogger().error("ParseException/IOException error (adding from twitter): {}", e.getMessage());
-			e.printStackTrace();
 		}
 	}
 }

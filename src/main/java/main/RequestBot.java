@@ -1,16 +1,5 @@
 package main;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.net.URI;
-import java.util.Properties;
-import java.util.Scanner;
-
-import javax.security.auth.login.LoginException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.redouane59.twitter.TwitterClient;
@@ -20,19 +9,21 @@ import com.github.twitch4j.TwitchClientBuilder;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.SpotifyHttpManager;
-import com.wrapper.spotify.model_objects.credentials.AuthorizationCodeCredentials;
-import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeRequest;
-import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-
 import commands.*;
 import listeners.ChatListener;
+import listeners.JDAListener;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.exceptions.RateLimitedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import schedulers.ScheduledTasks;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 public class RequestBot
 {
@@ -43,13 +34,10 @@ public class RequestBot
 	//spotify
 	private static String spPlaylistId, spClientId, spClientSecret;
 	private static SpotifyApi spotifyApi;
-	private static AuthorizationCodeUriRequest authorizationCodeUriRequest;
-	private static AuthorizationCodeRequest authorizationCodeRequest;
-	private static AuthorizationCodeCredentials authorizationCodeCredentials;
 
 	//discord
-	private static String prefix = "r!";
-	private static String version = "1.3";
+	private static final String prefix = "r!";
+	private static final String version = "1.5";
 	private static String botToken, ownerId;
 
 	//twitter
@@ -58,10 +46,9 @@ public class RequestBot
 
 	//twitch
 	private static TwitchClient twitchClient;
-	private static String twchClientId, twchClientSecret, twchOAuth;
+	private static String twchOAuth;
 
-	public static void main(String[] args) throws IOException, LoginException, IllegalArgumentException, RateLimitedException
-	{
+	public static void main(String[] args) throws IOException, IllegalArgumentException {
 		//logger
 		logger = LoggerFactory.getLogger(RequestBot.class);
 
@@ -87,40 +74,17 @@ public class RequestBot
 		twtApiSecretKey = prop.getProperty("twt_api_secret_key");
 
 		//twitch api properties
-		twchClientId = prop.getProperty("twch_client_id");
-		twchClientId = prop.getProperty("twch_client_secret");
 		twchOAuth = prop.getProperty("twch_oauth");
 
 		try 
 		{
-
 			//spotify api init
-			Scanner kbd = new Scanner(System.in);
-
 			spotifyApi = new SpotifyApi.Builder()
 					.setClientId(spClientId)
 					.setClientSecret(spClientSecret)
 					.setRedirectUri(SpotifyHttpManager.makeUri("https://angelolz.dev"))
 					.build();
-
-			authorizationCodeUriRequest = spotifyApi.authorizationCodeUri().scope("user-read-playback-state playlist-modify-private playlist-modify-public playlist-read-private playlist-read-collaborative").build();
-			URI uri = authorizationCodeUriRequest.execute();
-
-			//asks to authorize spotify account and input auth code to get access and refresh tokens
-			System.out.println("Open auth link in browser:\n" + uri.toString());
-			System.out.println();
-			System.out.print("Enter auth code: ");
-			String code = kbd.nextLine();
-			kbd.close();
-
-			authorizationCodeRequest = spotifyApi.authorizationCode(code).build();
-			authorizationCodeCredentials = authorizationCodeRequest.execute();
-			String access = authorizationCodeCredentials.getAccessToken();
-			String refresh = authorizationCodeCredentials.getRefreshToken();
-
-			spotifyApi.setAccessToken(access);
-			spotifyApi.setRefreshToken(refresh);
-			logger.info("Finished loading Spotify API with access token.");
+			logger.info("Finished loading Spotify API. DON'T FORGET TO SET ACCESS TOKEN USING DISCORD COMMANDS!");
 
 			//database init
 			String configFile = "db.properties";
@@ -142,8 +106,6 @@ public class RequestBot
 			/*   twitch bot   */
 			OAuth2Credential credential = new OAuth2Credential("twitch", twchOAuth);
 			twitchClient = TwitchClientBuilder.builder()
-					.withClientId(twchClientId)
-					.withClientSecret(twchClientSecret)
 					.withEnableHelix(true)
 					.withEnableChat(true)
 					.withChatAccount(credential)
@@ -178,11 +140,11 @@ public class RequestBot
 			JDABuilder.createDefault(botToken)
 			.setStatus(OnlineStatus.DO_NOT_DISTURB)
 			.setActivity(Activity.playing("loading!! | h!help"))
-			.addEventListeners(client.build())
+			.addEventListeners(client.build(), new JDAListener())
 			.build();
 
 			//init timed tasks
-			new ScheduledTasks();
+			ScheduledTasks.init();
 		}
 
 		catch(Exception e)

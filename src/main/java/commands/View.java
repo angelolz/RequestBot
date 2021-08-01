@@ -2,6 +2,8 @@ package commands;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import main.RequestBot;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 
 public class View extends Command 
 {
@@ -15,7 +17,27 @@ public class View extends Command
 	@Override
 	protected void execute(CommandEvent event)
 	{
-		String link = "https://open.spotify.com/playlist/6N6FvUk4YionGIa6xaUBx5?si=yFp085xsQbaIoomP0hg15A";
-		event.reply("Here is the current request playlist:\n" + link);
+		executeAction(event, null);
+	}
+
+	public static void executeSlash(SlashCommandEvent event)
+	{
+		executeAction(null, event);
+	}
+
+	private static void executeAction(CommandEvent textEvent, SlashCommandEvent slashEvent)
+	{
+		String message = "Here is the current playlist:\n" +
+				"https://open.spotify.com/playlist/" + RequestBot.getPlaylistId();
+
+		if(slashEvent == null)
+		{
+			textEvent.reply(message);
+		}
+
+		else
+		{
+			slashEvent.reply(message).queue();
+		}
 	}
 }

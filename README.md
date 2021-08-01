@@ -12,10 +12,12 @@
 <p>The available commands are listed below:
 <code>*</code> = Discord only, <code>**</code> = Discord and Twitch</p>
 <ul>
-    <li>r!add **</li>
-    <li>r!view **</li>
     <li>r!help *</li>
     <li>r!ping *</li>
+    <li>r!add **</li>
+    <li>r!view **</li>
+    <li>r!recent *</li>
+    <li>r!np **</li>
 </ul>
 
 <p>With each song/album submission, the bot keeps track where the submission came from and who
@@ -25,29 +27,29 @@
 <h3>Discord/Twitch</h3>
 <p>On <em>Discord/Twitch</em>, send the following command in a Discord server with the bot in it or
     in my own <a href="https://www.twitch.tv/popout/angelolz1/chat">Twitch chat</a>:
-<code>r!add https://open.spotify.com/track/2CgOd0Lj5MuvOqzqdaAXtS?si=a65f4df98aeb4b80</code></p>
+<code>r!add https://open.spotify.com/track/2CgOd0Lj5MuvOqzqdaAXtS</code></p>
 
 <p>This will add a song to my playlist, and the bot will send a confirmation message to let you
     know that it has been added, as well as how many songs are in the playlist. </p>
 
-<center>
+<div style="text-align: center;">
 <h4>Examples</h4>
     <img src="https://i.imgur.com/BwNzJjs.png" alt="Discord Bot Usage" width="300" height="199">
     <p>Discord Bot Usage</p>
     <img src="https://i.imgur.com/W0T7DuI.png" alt="Twitch Bot Usage">
     <p>Twitch Bot Usage</p>
-</center>
+</div>
 
 <h3>Twitter</h3>
-<p>On Twitter, you&#39;d want to mention my twitter <a href="https://twitter.com/angelolz1">(@angelolz1)</a> along
+<p>On Twitter, all you need is to  mention my twitter (<a href="https://twitter.com/angelolz1">@angelolz1</a>) along
     with a Spotify link, optionally leaving a message in the tweet.</p>
-<p>Once tweeted, <a href="https://twitter.com/AngelolzBot">My request bot</a> will like your tweet and reply to
+<p>Once tweeted, <a href="https://twitter.com/AngelolzBot">my request bot</a> will like your tweet and reply to
     your tweet to confirm that your song has been added to the playlist.</p>
 
-<center>
+<div style="text-align: center;">
 <h4>Example Tweet:</h4>
 <img src="https://imgur.com/3nWqnRt.png" alt="Example Tweet" width="423" height="300">
-</center>
+</div>
 
 <h1 id="dependencies-used-">Dependencies Used:</h1>
 <ul>

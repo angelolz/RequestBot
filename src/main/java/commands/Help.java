@@ -13,10 +13,9 @@ public class Help extends Command
 
 	public Help()
 	{
-		this.cooldown = 3;
-		this.guildOnly = true;
-		this.help = "Shows this help embed.";
 		this.name = "help";
+		this.help = "Shows this help embed.";
+		this.cooldown = 3;
 		this.botPermissions = new Permission[] {Permission.MESSAGE_EMBED_LINKS};
 	}
 
@@ -34,7 +33,6 @@ public class Help extends Command
 		//insert info into embed
 		event.getJDA().retrieveUserById(ownerId).queue(
 				(user) -> {
-
 					embed.setTitle("Angel's Spotify Request bot");
 					embed.setColor(0x32CD32);
 					embed.setDescription("Here are a list of commands you can use!");
@@ -49,9 +47,9 @@ public class Help extends Command
 							if(command.getAliases().length > 0)
 							{
 								String[] aliases = command.getAliases();
-								for(int i = 0; i < aliases.length; i++)
+								for (String alias : aliases)
 								{
-									commandName = commandName.concat("/" + aliases[i]);
+									commandName = commandName.concat("/" + alias);
 								}
 							}
 
@@ -61,10 +59,5 @@ public class Help extends Command
 
 					event.reply(embed.build());
 				});
-	}
-
-	public static int getCommandCount()
-	{
-		return commandCount;
 	}
 }

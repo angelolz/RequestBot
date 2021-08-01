@@ -13,10 +13,10 @@ public class SpotifyRequest
 		this.source = source;
 	}
 
-	public String getUri() {
+	public String getUri()
+	{
 		return uri;
 	}
-
 	public String getAddedBy() {
 		return addedBy;
 	}

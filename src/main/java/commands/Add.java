@@ -3,6 +3,8 @@ package commands;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import main.SlashCommandsInit;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import org.apache.hc.core5.http.ParseException;
 
 import com.jagrosh.jdautilities.command.Command;
@@ -12,7 +14,6 @@ import com.wrapper.spotify.model_objects.specification.Album;
 import com.wrapper.spotify.model_objects.specification.Track;
 
 import main.RequestBot;
-import methods.DBManager;
 import methods.*;
 
 public class Add extends Command
@@ -27,101 +28,178 @@ public class Add extends Command
 	@Override
 	protected void execute(CommandEvent event)
 	{
-		SpotifyLink link = new SpotifyLink(event.getArgs());
+		executeAction(event, null);
+	}
 
-		try
+	public static void executeSlash(SlashCommandEvent event)
+	{
+		executeAction(null, event);
+	}
+
+	private static void executeAction(CommandEvent textEvent, SlashCommandEvent slashEvent)
+	{
+		if(RequestBot.getSpotifyApi().getAccessToken() == null)
 		{
-			if(link.validLink())
+			String message = ":x: | Sorry, I haven't been set up with a Spotify token yet! Let Angel know about this!";
+			if(slashEvent == null)
 			{
-				if(link.isTrack())
+				textEvent.reply(message);
+			}
+
+			else
+			{
+				slashEvent.reply(message).queue();
+			}
+		}
+
+		else
+		{
+			SpotifyLink link = new SpotifyLink(slashEvent == null ? textEvent.getArgs() : slashEvent.getOption("url").getAsString());
+			try
+			{
+				if(link.validLink())
 				{
-					Track track = SpotifyManager.getTrack(link.getUri());
-					String artists = SpotifyManager.getArtistsString(track.getArtists());
-					SpotifyManager.addTrackToPlaylist(track);
-
-					int numOfTracks = SpotifyManager.getPlaylistTrackTotal();
-
-					event.reply(String.format("Successfully added the track **%s** by *%s* to the playlist! "
-							+ "There are **%s** songs in the playlist right now. "
-							+ "Use `" + RequestBot.getBotPrefix() + "view` to see the playlist!",
-							track.getName(), artists, numOfTracks > 100 ? "more than 100" : String.valueOf(numOfTracks)));
-
-					DBManager.addRequest(link.getUri(), true, event.getAuthor().getAsTag(), "discord");
-				}
-
-				else
-				{
-					Album album = SpotifyManager.getAlbum(link.getUri());
-
-					if(SpotifyManager.addAlbumToPlaylist(album))
+					if(link.isTrack())
 					{
-						String artists = SpotifyManager.getArtistsString(album.getArtists());
+						Track track = SpotifyManager.getTrack(link.getUri());
+						String artists = SpotifyManager.getArtistsString(track.getArtists());
+						SpotifyManager.addTrackToPlaylist(track);
 
 						int numOfTracks = SpotifyManager.getPlaylistTrackTotal();
 
-						event.reply(String.format("Successfully added the album **%s** by *%s* to the playlist! "
-								+ "There are **%s** songs in the playlist right now. "
-								+ "Use `" + RequestBot.getBotPrefix() + "view` to see the playlist!",
-								album.getName(), artists, numOfTracks > 100 ? "more than 100" : String.valueOf(numOfTracks)));
+						String message = String.format("Successfully added the track **%s** by *%s* to the playlist! "
+										+ "There are **%s** songs in the playlist right now. "
+										+ "Use `" + RequestBot.getBotPrefix() + "view` to see the playlist!",
+								track.getName(), artists, numOfTracks > 100 ? "more than 100" : String.valueOf(numOfTracks));
 
-						DBManager.addRequest(link.getUri(), false, event.getAuthor().getAsTag(), "discord");
+						if(slashEvent == null)
+						{
+							textEvent.reply(message);
+							DBManager.addRequest(link.getUri(), true, textEvent.getAuthor().getAsTag(), "discord");
+						}
+
+						else
+						{
+							slashEvent.reply(message).queue();
+							DBManager.addRequest(link.getUri(), true, slashEvent.getUser().getAsTag(), "discord");
+						}
 					}
 
 					else
 					{
-						event.reply(":x: | ***SHEEEESH*** You have an album with more than 20 songs! "
-								+ "How about you just pick a handful that you think would be best to listen to?");
+						Album album = SpotifyManager.getAlbum(link.getUri());
+
+						if(SpotifyManager.addAlbumToPlaylist(album))
+						{
+							String artists = SpotifyManager.getArtistsString(album.getArtists());
+
+							int numOfTracks = SpotifyManager.getPlaylistTrackTotal();
+
+							String message = String.format("Successfully added the album **%s** by *%s* to the playlist! "
+											+ "There are **%s** songs in the playlist right now. "
+											+ "Use `" + RequestBot.getBotPrefix() + "view` to see the playlist!",
+									album.getName(), artists, numOfTracks > 100 ? "more than 100" : String.valueOf(numOfTracks));
+
+							if(slashEvent == null)
+							{
+								textEvent.reply(message);
+								DBManager.addRequest(link.getUri(), false, textEvent.getAuthor().getAsTag(), "discord");
+							}
+
+							else
+							{
+								slashEvent.reply(message).queue();
+								DBManager.addRequest(link.getUri(), false, slashEvent.getUser().getAsTag(), "discord");
+							}
+						}
+
+						else
+						{
+							String message = ":x: | You have an album with more than 20 songs! How about you just pick a handful from them instead?";
+							if(slashEvent == null)
+							{
+								textEvent.reply(message);
+							}
+
+							else
+							{
+								slashEvent.reply(message).queue();
+							}
+						}
 					}
-				}
-			}
-
-			else
-			{
-				event.reply(":x: | That's not a valid Spotify track link or album link.");
-			}
-		}
-
-		catch (IOException | ParseException e) 
-		{
-			RequestBot.getLogger().error("IOException/ParseException Error: " + e.toString());
-			if(link.isTrack())
-			{
-				event.reply(":x: | There was an error in adding your track.");
-			}
-
-			else
-			{
-				event.reply(":x: | There was an error in adding your album.");
-			}
-		}
-
-		catch (SpotifyWebApiException e)
-		{
-			//if someone puts an invalid spotify track/album
-			if(e.toString().contains("invalid id"))
-			{
-				if(link.isTrack())
-				{
-					event.reply(":x: | That's not a valid track.");
 				}
 
 				else
 				{
-					event.reply(":x: | That's not a valid album.");
+					String message = ":x: | That's not a valid Spotify track link or album link.";
+					if(slashEvent == null)
+					{
+						textEvent.reply(message);
+					}
+
+					else
+					{
+						slashEvent.reply(message).queue();
+					}
 				}
 			}
 
-			//for other spotify api exceptions
-			else
+			catch (IOException | ParseException e)
 			{
-				event.reply(":x: | Sorry, there was a problem in adding this to the playlist!");
-				RequestBot.getLogger().error("Spotify API Error: " + e.toString());
-			}
-		}
+				RequestBot.getLogger().error("IOException/ParseException Error -- {}: {}", e.getClass().getName(), e.getMessage());
 
-		catch (SQLException e)
-		{
-			RequestBot.getLogger().error("SQLException: " + e.toString());
+				String message = ":x: | There was an error in adding your " + (link.isTrack() ? "track." : "album.");
+				if(slashEvent == null)
+				{
+					textEvent.reply(message);
+				}
+
+				else
+				{
+					slashEvent.reply(message).queue();
+				}
+			}
+
+			catch (SpotifyWebApiException e)
+			{
+				//if someone puts an invalid spotify track/album
+				if(e.toString().contains("invalid id"))
+				{
+					String message = ":x: | That's not a valid " + (link.isTrack() ? "track." : "album.");
+					if(slashEvent == null)
+					{
+						textEvent.reply(message);
+					}
+
+					else
+					{
+						slashEvent.reply(message).queue();
+					}
+				}
+
+				//for other spotify api exceptions
+				else
+				{
+					RequestBot.getLogger().error("Spotify API Error: {}", e.getMessage());
+
+					String message = ":x: | Sorry, there was a problem in adding this to the playlist!";
+					if(slashEvent == null)
+					{
+						textEvent.reply(message);
+					}
+
+					else
+					{
+						slashEvent.reply(message).queue();
+					}
+
+				}
+			}
+
+			catch (SQLException e)
+			{
+				RequestBot.getLogger().error("SQLException: {}", e.getMessage());
+			}
 		}
 	}
 }

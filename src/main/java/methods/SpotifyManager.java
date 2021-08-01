@@ -23,7 +23,7 @@ public class SpotifyManager
 {	
 	public static void addTrackToPlaylist(Track track) throws IOException, ParseException, SpotifyWebApiException
 	{
-		String[] uris = null;
+		String[] uris;
 
 		uris = new String[] {track.getUri()};
 		AddItemsToPlaylistRequest addRequest = RequestBot.getSpotifyApi().addItemsToPlaylist(RequestBot.getPlaylistId(), uris).build();
@@ -32,7 +32,7 @@ public class SpotifyManager
 
 	public static boolean addAlbumToPlaylist(Album album) throws ParseException, SpotifyWebApiException, IOException
 	{
-		String[] uris = null;
+		String[] uris;
 
 		Paging<TrackSimplified> pagingTracks = album.getTracks();
 		if(pagingTracks.getTotal() > 20)
@@ -67,26 +67,23 @@ public class SpotifyManager
 	public static Track getTrack(String uri) throws IOException, ParseException, SpotifyWebApiException
 	{
 		GetTrackRequest trackRequest = RequestBot.getSpotifyApi().getTrack(uri).build();
-		Track track = trackRequest.execute();
-		return track;
+		return trackRequest.execute();
 	}
 
 	public static Album getAlbum(String uri) throws IOException, ParseException, SpotifyWebApiException
 	{
 		GetAlbumRequest albumRequest = RequestBot.getSpotifyApi().getAlbum(uri).build();
-		Album album = albumRequest.execute();
-		return album;
+		return albumRequest.execute();
 	}
 
 	public static String getArtistsString(ArtistSimplified[] artists)
 	{
-		String artistString = "";
-		for(int i = 0; i < artists.length; i++)
-		{
-			artistString += artists[i].getName() + ", ";
+		StringBuilder artistString = new StringBuilder();
+		for (ArtistSimplified artist : artists) {
+			artistString.append(artist.getName()).append(", ");
 		}
 
-		artistString = artistString.replaceAll(", $", "");
-		return artistString;
+		artistString = new StringBuilder(artistString.toString().replaceAll(", $", ""));
+		return artistString.toString();
 	}
 }

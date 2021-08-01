@@ -15,7 +15,7 @@ public class DBManager
 		String sql = "INSERT INTO Requests (uri, isTrack, addedBy, source) VALUES (?,?,?,?);";
 
 		try(Connection con = RequestBot.getDataSource().getConnection();
-				PreparedStatement pst = con.prepareStatement(sql);)
+				PreparedStatement pst = con.prepareStatement(sql))
 		{
 			pst.setString(1, uri);
 			pst.setBoolean(2, isTrack);
@@ -30,7 +30,7 @@ public class DBManager
 		String sql = "INSERT INTO Tweets (tweet_id) VALUES (?);";
 
 		try(Connection con = RequestBot.getDataSource().getConnection();
-				PreparedStatement pst = con.prepareStatement(sql);)
+				PreparedStatement pst = con.prepareStatement(sql))
 		{
 			pst.setString(1, id);
 			pst.executeUpdate();
