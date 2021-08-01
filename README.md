@@ -51,6 +51,47 @@
 <img src="https://imgur.com/3nWqnRt.png" alt="Example Tweet" width="423" height="300">
 </div>
 
+<h1 id="development-setup">Development Setup</h1>
+<ol>
+    <li>First off, you'd need to grab a bunch of api keys for this application. 
+            This should be pasted in a <code>config.properties</code> file.
+        <br>
+        <p>
+            <h3>Spotify</h3>
+            <ul>
+                <li>Use the hidden Discord command <code>r!set</code> to get your authorization code.</li>
+                <li>The code will be found in the URL address. Use the <code>r!set</code> command again but provide your authorization code.</li>
+            </ul>
+            <h3>Discord</h3>
+            <ul>
+                <li>Visit the <a href="https://discord.com/developers/applications">developer dashboard.</a></li>
+                <li>Give your app a name, and click <b>Create</b>.</li>
+                <li>Click on the <b>Bot</b> menu on the left side and copy your token.</li>
+                <li>Paste the token in the <code>d_bot_token</code> field.</li>
+            </ul>
+            <h3>Twitter</h3>
+            <ul>
+                <li>Visit the <a href="https://developer.twitter.com/en/portal/projects-and-apps">developer dashboard.</a></li>
+                <li>Click on the <b>Create App</b> button and give your app a name.</li>
+                <li>Copy the <b>API Key</b> and <b>API Secret Key</b>. Paste the keys in the <code>twt_api_key</code> and <code>twt_api_secret_key</code> fields, respectively.</li>
+                <li>Go to the settings of your app and change the app permissions to <b>Read and Write</b>.</li>
+                <li>Click on <b>Overview</b> to go to the main list of all your apps. Click on the key icon of the app you've created.</li>
+                <li>Click on the <b>Generate</b> button on the <b>Access Token and Secret</b> section.</li>
+                <li>Copy the <b>Access Token</b> and <b>Access Token Secret</b>. Paste the keys in the <code>twt_access_token</code> and <code>twt_access_token_secret</code> fields, respectively.</li>
+            </ul>
+            <h3>Twitch</h3>
+            <ul>
+                <li>You can use an OAuth Generator <a href="https://twitchapps.com/tmi/">page</a> to get your token. </li>
+                <li>Copy and paste the token into the <code>twch_oauth</code> field.</li>
+            </ul>
+    </li>
+    <li>Create the required database and tables needed for the bot, which can be found in the
+        <b><a href="https://github.com/angelolz1/RequestBot/blob/master/src/main/resources/tables.sql">tables.sql</a></b> file.
+    </li>
+    <li>Enter your database credentials in the <b>db.properties</b> file.</li>
+    <li>If everything was configured correctly, the app should run normally upon executing it.</li>
+    
+</ol>
 <h1 id="dependencies-used-">Dependencies Used:</h1>
 <ul>
 <li><a href="https://github.com/DV8FromTheWorld/JDA/">JDA</a>/<a href="https://github.com/JDA-Applications/JDA-Utilities">jda-utilities</a></li>
