@@ -95,7 +95,7 @@ public class Recent extends Command
 
 				if(list.size() == 0)
 				{
-					String message = ":x: | Sorry, there hasn't been any songs given to me yet! You can do so by using `" + RequestBot.getBotPrefix() + "add` followed by a Spotify track/album!";
+					String message = ":x: | Sorry, there hasn't been any songs given to me yet! You can do so by using `" + RequestBot.getBotPrefix() + "add` or `/add` followed by a Spotify track/album!";
 					if(slashEvent == null)
 					{
 						textEvent.reply(message);

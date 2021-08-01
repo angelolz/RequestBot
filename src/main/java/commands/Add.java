@@ -69,7 +69,7 @@ public class Add extends Command
 
 						String message = String.format("Successfully added the track **%s** by *%s* to the playlist! "
 										+ "There are **%s** songs in the playlist right now. "
-										+ "Use `" + RequestBot.getBotPrefix() + "view` to see the playlist!",
+										+ "Use `" + RequestBot.getBotPrefix() + "view` or `/view` to see the playlist!",
 								track.getName(), artists, numOfTracks > 100 ? "more than 100" : String.valueOf(numOfTracks));
 
 						if(slashEvent == null)
@@ -97,7 +97,7 @@ public class Add extends Command
 
 							String message = String.format("Successfully added the album **%s** by *%s* to the playlist! "
 											+ "There are **%s** songs in the playlist right now. "
-											+ "Use `" + RequestBot.getBotPrefix() + "view` to see the playlist!",
+											+ "Use `" + RequestBot.getBotPrefix() + "view` or `/view` to see the playlist!",
 									album.getName(), artists, numOfTracks > 100 ? "more than 100" : String.valueOf(numOfTracks));
 
 							if(slashEvent == null)
