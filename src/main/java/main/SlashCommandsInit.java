@@ -10,10 +10,10 @@ public class SlashCommandsInit
     public static void init(JDA jda)
     {
         //guild commands for testing
-        CommandListUpdateAction commands = jda.getGuildById("695074147071557632").updateCommands();
+//        CommandListUpdateAction commands = jda.getGuildById("695074147071557632").updateCommands();
 
         //global commands
-//        CommandListUpdateAction commands = jda.updateCommands();
+        CommandListUpdateAction commands = jda.updateCommands();
 
         commands.addCommands(
             new CommandData("add", "Add a song to the Spotify request playlist.")
