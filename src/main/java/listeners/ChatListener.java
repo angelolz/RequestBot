@@ -3,23 +3,23 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-import com.wrapper.spotify.SpotifyApi;
-import com.wrapper.spotify.model_objects.miscellaneous.CurrentlyPlayingContext;
-import com.wrapper.spotify.requests.data.player.GetInformationAboutUsersCurrentPlaybackRequest;
-import com.wrapper.spotify.requests.data.tracks.GetTrackRequest;
 import org.apache.hc.core5.http.ParseException;
 
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.chat.TwitchChat;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
-import com.wrapper.spotify.exceptions.SpotifyWebApiException;
-import com.wrapper.spotify.model_objects.specification.Album;
-import com.wrapper.spotify.model_objects.specification.Track;
 
 import main.RequestBot;
 import methods.DBManager;
 import methods.SpotifyLink;
 import methods.SpotifyManager;
+import se.michaelthelin.spotify.SpotifyApi;
+import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
+import se.michaelthelin.spotify.model_objects.miscellaneous.CurrentlyPlayingContext;
+import se.michaelthelin.spotify.model_objects.specification.Album;
+import se.michaelthelin.spotify.model_objects.specification.Track;
+import se.michaelthelin.spotify.requests.data.player.GetInformationAboutUsersCurrentPlaybackRequest;
+import se.michaelthelin.spotify.requests.data.tracks.GetTrackRequest;
 
 public class ChatListener
 {

@@ -4,20 +4,13 @@ import java.io.IOException;
 
 import org.apache.hc.core5.http.ParseException;
 
-import com.wrapper.spotify.exceptions.SpotifyWebApiException;
-import com.wrapper.spotify.model_objects.specification.Album;
-import com.wrapper.spotify.model_objects.specification.ArtistSimplified;
-import com.wrapper.spotify.model_objects.specification.Paging;
-import com.wrapper.spotify.model_objects.specification.Playlist;
-import com.wrapper.spotify.model_objects.specification.PlaylistTrack;
-import com.wrapper.spotify.model_objects.specification.Track;
-import com.wrapper.spotify.model_objects.specification.TrackSimplified;
-import com.wrapper.spotify.requests.data.albums.GetAlbumRequest;
-import com.wrapper.spotify.requests.data.playlists.AddItemsToPlaylistRequest;
-import com.wrapper.spotify.requests.data.playlists.GetPlaylistRequest;
-import com.wrapper.spotify.requests.data.tracks.GetTrackRequest;
-
 import main.RequestBot;
+import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
+import se.michaelthelin.spotify.model_objects.specification.*;
+import se.michaelthelin.spotify.requests.data.albums.GetAlbumRequest;
+import se.michaelthelin.spotify.requests.data.playlists.AddItemsToPlaylistRequest;
+import se.michaelthelin.spotify.requests.data.playlists.GetPlaylistRequest;
+import se.michaelthelin.spotify.requests.data.tracks.GetTrackRequest;
 
 public class SpotifyManager 
 {	

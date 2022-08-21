@@ -8,15 +8,15 @@ import org.apache.hc.core5.http.ParseException;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
-import com.wrapper.spotify.SpotifyApi;
-import com.wrapper.spotify.exceptions.SpotifyWebApiException;
-import com.wrapper.spotify.model_objects.credentials.AuthorizationCodeCredentials;
-import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeRequest;
-import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
 
 import main.RequestBot;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
+import se.michaelthelin.spotify.SpotifyApi;
+import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
+import se.michaelthelin.spotify.model_objects.credentials.AuthorizationCodeCredentials;
+import se.michaelthelin.spotify.requests.authorization.authorization_code.AuthorizationCodeRequest;
+import se.michaelthelin.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
 
 public class Set extends Command
 {
@@ -48,7 +48,7 @@ public class Set extends Command
 						embed.setColor(0x1DB954);
 						embed.setTitle("Get your authorization code here!");
 						embed.setDescription("Use [**this**](" + uri.toString() + ") link to get your refresh code set :)");
-						dm.sendMessage(embed.build()).queue();
+						dm.sendMessageEmbeds(embed.build()).queue();
 					});
 
 			event

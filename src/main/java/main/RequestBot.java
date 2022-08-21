@@ -7,8 +7,6 @@ import com.github.redouane59.twitter.signature.TwitterCredentials;
 import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.TwitchClientBuilder;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
-import com.wrapper.spotify.SpotifyApi;
-import com.wrapper.spotify.SpotifyHttpManager;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import commands.*;
@@ -20,6 +18,8 @@ import net.dv8tion.jda.api.entities.Activity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import schedulers.ScheduledTasks;
+import se.michaelthelin.spotify.SpotifyApi;
+import se.michaelthelin.spotify.SpotifyHttpManager;
 
 import java.io.FileInputStream;
 import java.io.IOException;

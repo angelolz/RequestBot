@@ -3,18 +3,17 @@ package commands;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import main.SlashCommandsInit;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import org.apache.hc.core5.http.ParseException;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
-import com.wrapper.spotify.exceptions.SpotifyWebApiException;
-import com.wrapper.spotify.model_objects.specification.Album;
-import com.wrapper.spotify.model_objects.specification.Track;
 
 import main.RequestBot;
 import methods.*;
+import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
+import se.michaelthelin.spotify.model_objects.specification.Album;
+import se.michaelthelin.spotify.model_objects.specification.Track;
 
 public class Add extends Command
 {

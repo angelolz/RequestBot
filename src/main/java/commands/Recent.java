@@ -2,17 +2,17 @@ package commands;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
-import com.wrapper.spotify.SpotifyApi;
-import com.wrapper.spotify.model_objects.specification.Album;
-import com.wrapper.spotify.model_objects.specification.ArtistSimplified;
-import com.wrapper.spotify.model_objects.specification.Track;
-import com.wrapper.spotify.requests.data.albums.GetSeveralAlbumsRequest;
-import com.wrapper.spotify.requests.data.tracks.GetSeveralTracksRequest;
 import helperObjects.SpotifyRequest;
 import main.RequestBot;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import se.michaelthelin.spotify.SpotifyApi;
+import se.michaelthelin.spotify.model_objects.specification.Album;
+import se.michaelthelin.spotify.model_objects.specification.ArtistSimplified;
+import se.michaelthelin.spotify.model_objects.specification.Track;
+import se.michaelthelin.spotify.requests.data.albums.GetSeveralAlbumsRequest;
+import se.michaelthelin.spotify.requests.data.tracks.GetSeveralTracksRequest;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
