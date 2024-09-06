@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.TimeUnit;
 
+import net.dv8tion.jda.api.JDA;
 import org.apache.hc.core5.http.ParseException;
 
 import com.jagrosh.jdautilities.command.Command;
@@ -20,75 +21,81 @@ import se.michaelthelin.spotify.requests.authorization.authorization_code.Author
 
 public class Set extends Command
 {
-	public Set()
-	{
-		this.name = "set";
-		this.help = "Sets a new access and refresh token **(ADMIN ONLY)**";
-		this.ownerCommand = true;
-		this.guildOnly = false;
-	}
+    public Set()
+    {
+        this.name = "set";
+        this.help = "Sets a new access and refresh token **(ADMIN ONLY)**";
+        this.ownerCommand = true;
+        this.guildOnly = false;
+    }
 
-	@Override
-	protected void execute(CommandEvent event)
-	{
-		if(event.getArgs().isEmpty())
-		{
-			event.getJDA().openPrivateChannelById(event.getClient().getOwnerId()).queue(
-					(dm) ->
-					{
-						AuthorizationCodeUriRequest authorizationCodeUriRequest = RequestBot.getSpotifyApi()
-								.authorizationCodeUri()
-								.scope("playlist-modify-private playlist-modify-public playlist-read-private playlist-read-collaborative " +
-										"user-read-currently-playing user-read-playback-state")
-								.build();
+    @Override
+    protected void execute(CommandEvent event)
+    {
+        if(event.getArgs().isEmpty())
+        {
+	        sendAuthorizationEmbed(event.getJDA(), event.getClient().getOwnerId());
 
-						URI uri = authorizationCodeUriRequest.execute();
+            event
+                .getChannel()
+                .sendMessage(":white_check_mark: | A DM has been sent for further instructions!")
+                .delay(5, TimeUnit.SECONDS)
+                .flatMap(Message::delete)
+                .queue();
+        }
 
-						EmbedBuilder embed = new EmbedBuilder();
-						embed.setColor(0x1DB954);
-						embed.setTitle("Get your authorization code here!");
-						embed.setDescription("Use [**this**](" + uri.toString() + ") link to get your refresh code set :)");
-						dm.sendMessageEmbeds(embed.build()).queue();
-					});
+        else
+        {
+            try
+            {
+                if(!event.getChannel().getType().toString().equals("PRIVATE"))
+                {
+                    event.getMessage().delete().queue();
+                }
 
-			event
-					.getChannel()
-					.sendMessage(":white_check_mark: | A DM has been sent for further instructions!")
-					.delay(5, TimeUnit.SECONDS)
-					.flatMap(Message::delete)
-					.queue();
-		}
+                SpotifyApi api = RequestBot.getSpotifyApi();
 
-		else
-		{
-			try
-			{
-				if(!event.getChannel().getType().toString().equals("PRIVATE"))
-				{
-					event.getMessage().delete().queue();
-				}
+                AuthorizationCodeRequest authorizationCodeRequest = api.authorizationCode(event.getArgs()).build();
+                AuthorizationCodeCredentials authorizationCodeCredentials = authorizationCodeRequest.execute();
+                String access = authorizationCodeCredentials.getAccessToken();
+                String refresh = authorizationCodeCredentials.getRefreshToken();
 
-				SpotifyApi api = RequestBot.getSpotifyApi();
+                api.setAccessToken(access);
+                api.setRefreshToken(refresh);
 
-				AuthorizationCodeRequest authorizationCodeRequest = api.authorizationCode(event.getArgs()).build();
-				AuthorizationCodeCredentials authorizationCodeCredentials = authorizationCodeRequest.execute();
-				String access = authorizationCodeCredentials.getAccessToken();
-				String refresh = authorizationCodeCredentials.getRefreshToken();
+                event.getChannel().sendMessage(":white_check_mark: | Successfully set your tokens.")
+                     .delay(5, TimeUnit.SECONDS)
+                     .flatMap(Message::delete)
+                     .queue();
+            }
 
-				api.setAccessToken(access);
-				api.setRefreshToken(refresh);
+            catch(ParseException | SpotifyWebApiException | IOException e)
+            {
+                RequestBot.getLogger().error("Exception caught -- {}: {}", e.getClass().getName(), e.getMessage());
+                event.reply(":x: | There was an error in getting your tokens.");
+            }
+        }
+    }
 
-				event.getChannel().sendMessage(":white_check_mark: | Successfully set your tokens.")
-						.delay(5, TimeUnit.SECONDS)
-						.flatMap(Message::delete)
-						.queue();
-			}
+    public static void sendAuthorizationEmbed(JDA jda, String ownerId)
+    {
+        jda.openPrivateChannelById(ownerId).queue(
+            dm ->
+            {
+                AuthorizationCodeUriRequest authorizationCodeUriRequest = RequestBot.getSpotifyApi()
+	                .authorizationCodeUri()
+	                .scope("playlist-modify-private playlist-modify-public playlist-read-private " +
+	                    "playlist-read-collaborative " +
+	                    "user-read-currently-playing user-read-playback-state")
+	                .build();
 
-			catch (ParseException | SpotifyWebApiException | IOException e)
-			{
-				RequestBot.getLogger().error("Exception caught -- {}: {}", e.getClass().getName(), e.getMessage());
-				event.reply(":x: | There was an error in getting your tokens.");
-			}
-		}
-	}
+                URI uri = authorizationCodeUriRequest.execute();
+
+                EmbedBuilder embed = new EmbedBuilder();
+                embed.setColor(0x1DB954);
+                embed.setTitle("Get your authorization code here!");
+                embed.setDescription("Use [**this**](" + uri.toString() + ") link to get your refresh code set :)");
+                dm.sendMessageEmbeds(embed.build()).queue();
+            });
+    }
 }

@@ -37,7 +37,7 @@ public class RequestBot
 
 	//discord
 	private static final String prefix = "r!";
-	private static final String version = "1.4.2";
+	private static final String version = "1.4.3";
 	private static String botToken, ownerId;
 
 	//twitter
@@ -140,7 +140,7 @@ public class RequestBot
 			JDABuilder.createDefault(botToken)
 			.setStatus(OnlineStatus.DO_NOT_DISTURB)
 			.setActivity(Activity.playing("loading!! | h!help"))
-			.addEventListeners(client.build(), new JDAListener())
+			.addEventListeners(client.build(), new JDAListener(ownerId))
 			.build();
 
 			//init timed tasks
