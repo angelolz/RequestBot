@@ -41,7 +41,7 @@
 </div>
 
 <h3>Twitter</h3>
-Twitter support has been removed as of **September 10, 2024** due to the changes in the API.
+Twitter support has been removed as of <b>September 10, 2024</b> due to the changes in the API.
 
 <h1 id="development-setup">Development Setup</h1>
 <ol>
