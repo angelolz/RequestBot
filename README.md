@@ -2,7 +2,7 @@
 <p>This bot allows users to give me (Angel) songs to listen to from Spotify and
     add them in a single playlist, utilizing the Spotify Web API. I wanted to make
     this bot because I wanted to experiment with multiple APIs: Twitch API, Spotify Web API,
-    and Twitter API.</p>
+    and <strike>Twitter API</strike>.</p>
 
 <h2 id="bot-usage">Bot Usage</h2>
 <p>The only valid links RequestBot can accept are either <strong>Spotify tracks</strong>
@@ -21,7 +21,7 @@
 </ul>
 
 <p>With each song/album submission, the bot keeps track where the submission came from and who
-    submitted it, taking their Discord username and tag, Twitter handle, or Twitch username
+    submitted it, taking their Discord username and tag or Twitch username
     and storing it in a database.</p>
 
 <h3>Discord/Twitch</h3>
@@ -41,15 +41,7 @@
 </div>
 
 <h3>Twitter</h3>
-<p>On Twitter, all you need is to  mention my twitter (<a href="https://twitter.com/angelolz1">@angelolz1</a>) along
-    with a Spotify link, optionally leaving a message in the tweet.</p>
-<p>Once tweeted, <a href="https://twitter.com/AngelolzBot">my request bot</a> will like your tweet and reply to
-    your tweet to confirm that your song has been added to the playlist.</p>
-
-<div style="text-align: center;">
-<h4>Example Tweet:</h4>
-<img src="https://imgur.com/3nWqnRt.png" alt="Example Tweet" width="423" height="300">
-</div>
+Twitter support has been removed as of **September 10, 2024** due to the changes in the API.
 
 <h1 id="development-setup">Development Setup</h1>
 <ol>
@@ -69,16 +61,6 @@
                 <li>Click on the <b>Bot</b> menu on the left side and copy your token.</li>
                 <li>Paste the token in the <code>d_bot_token</code> field.</li>
             </ul>
-            <h3>Twitter</h3>
-            <ul>
-                <li>Visit the <a href="https://developer.twitter.com/en/portal/projects-and-apps">developer dashboard.</a></li>
-                <li>Click on the <b>Create App</b> button and give your app a name.</li>
-                <li>Copy the <b>API Key</b> and <b>API Secret Key</b>. Paste the keys in the <code>twt_api_key</code> and <code>twt_api_secret_key</code> fields, respectively.</li>
-                <li>Go to the settings of your app and change the app permissions to <b>Read and Write</b>.</li>
-                <li>Click on <b>Overview</b> to go to the main list of all your apps. Click on the key icon of the app you've created.</li>
-                <li>Click on the <b>Generate</b> button on the <b>Access Token and Secret</b> section.</li>
-                <li>Copy the <b>Access Token</b> and <b>Access Token Secret</b>. Paste the keys in the <code>twt_access_token</code> and <code>twt_access_token_secret</code> fields, respectively.</li>
-            </ul>
             <h3>Twitch</h3>
             <ul>
                 <li>You can use an OAuth Generator <a href="https://twitchapps.com/tmi/">page</a> to get your token. </li>
@@ -95,7 +77,6 @@
 <h1 id="dependencies-used-">Dependencies Used:</h1>
 <ul>
 <li><a href="https://github.com/DV8FromTheWorld/JDA/">JDA</a>/<a href="https://github.com/JDA-Applications/JDA-Utilities">jda-utilities</a></li>
-<li><a href="https://github.com/redouane59/twittered">twittered</a></li>
 <li><a href="https://github.com/twitch4j/twitch4j">Twitch4J</a></li>
 <li><a href="https://github.com/thelinmichael/spotify-web-api-java">spotify-web-api</a></li>
 <li><em>as well as other backend stuff (jdbc, hikariCP, jackson-core, logback-classic)</em></li>

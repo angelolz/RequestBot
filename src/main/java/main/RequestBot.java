@@ -2,8 +2,6 @@ package main;
 
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
-import com.github.redouane59.twitter.TwitterClient;
-import com.github.redouane59.twitter.signature.TwitterCredentials;
 import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.TwitchClientBuilder;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
@@ -37,12 +35,8 @@ public class RequestBot
 
 	//discord
 	private static final String prefix = "r!";
-	private static final String version = "1.4.3";
+	private static final String version = "1.4.4";
 	private static String botToken, ownerId;
-
-	//twitter
-	private static TwitterClient twitterClient;
-	private static String twtAccessToken, twtAccessTokenSecret, twtApiKey, twtApiSecretKey;
 
 	//twitch
 	private static TwitchClient twitchClient;
@@ -67,12 +61,6 @@ public class RequestBot
 		botToken = prop.getProperty("d_bot_token");
 		ownerId = prop.getProperty("d_owner_id");
 
-		//twitter api properties
-		twtAccessToken = prop.getProperty("twt_access_token");
-		twtAccessTokenSecret = prop.getProperty("twt_access_token_secret");
-		twtApiKey = prop.getProperty("twt_api_key");
-		twtApiSecretKey = prop.getProperty("twt_api_secret_key");
-
 		//twitch api properties
 		twchOAuth = prop.getProperty("twch_oauth");
 
@@ -91,17 +79,6 @@ public class RequestBot
 			HikariConfig cfg = new HikariConfig(configFile);
 			ds = new HikariDataSource(cfg);
 			logger.info("Connected to database successfully!");
-
-			/*   twitter bot   */
-			TwitterCredentials twtCred = TwitterCredentials.builder()
-					.accessToken(twtAccessToken)
-					.accessTokenSecret(twtAccessTokenSecret)
-					.apiKey(twtApiKey)
-					.apiSecretKey(twtApiSecretKey)
-					.build();
-
-			twitterClient = new TwitterClient(twtCred);
-			logger.info("Finished loading Twitter API.");
 
 			/*   twitch bot   */
 			OAuth2Credential credential = new OAuth2Credential("twitch", twchOAuth);
@@ -177,11 +154,6 @@ public class RequestBot
 	public static String getPlaylistId()
 	{
 		return spPlaylistId;
-	}
-
-	public static TwitterClient getTwitterClient()
-	{
-		return twitterClient;
 	}
 
 	public static TwitchClient getTwitchClient()
