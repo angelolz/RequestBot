@@ -13,6 +13,7 @@ import com.jagrosh.jdautilities.command.CommandEvent;
 import main.RequestBot;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
+import schedulers.ScheduledTasks;
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.credentials.AuthorizationCodeCredentials;
@@ -49,9 +50,7 @@ public class Set extends Command
             try
             {
                 if(!event.getChannel().getType().toString().equals("PRIVATE"))
-                {
                     event.getMessage().delete().queue();
-                }
 
                 SpotifyApi api = RequestBot.getSpotifyApi();
 
@@ -67,6 +66,8 @@ public class Set extends Command
                      .delay(5, TimeUnit.SECONDS)
                      .flatMap(Message::delete)
                      .queue();
+
+                ScheduledTasks.startSpotifyRefresh();
             }
 
             catch(ParseException | SpotifyWebApiException | IOException e)

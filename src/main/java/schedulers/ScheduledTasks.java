@@ -10,29 +10,31 @@ import java.util.concurrent.TimeUnit;
 
 public class ScheduledTasks
 {
-	public static void init()
-	{
-		Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(ScheduledTasks::refreshToken, 15, 30, TimeUnit.MINUTES);
-	}
+    public static void init() {}
 
-	//gets a new refresh and access token every hour
-	private static void refreshToken()
-	{
-		try
-		{
-			SpotifyApi api = RequestBot.getSpotifyApi();
-			if(!api.getAccessToken().isEmpty())
-			{
-				AuthorizationCodeRefreshRequest authorizationCodeRefreshRequest = api.authorizationCodeRefresh().build();
-				AuthorizationCodeCredentials authorizationCodeCredentials = authorizationCodeRefreshRequest.execute();
-				api.setAccessToken(authorizationCodeCredentials.getAccessToken());
-			}
-		}
+    //gets a new refresh and access token every hour
+    private static void refreshToken()
+    {
+        try
+        {
+            SpotifyApi api = RequestBot.getSpotifyApi();
+            if(!api.getAccessToken().isEmpty())
+            {
+                AuthorizationCodeRefreshRequest authorizationCodeRefreshRequest = api.authorizationCodeRefresh().build();
+                AuthorizationCodeCredentials authorizationCodeCredentials = authorizationCodeRefreshRequest.execute();
+                api.setAccessToken(authorizationCodeCredentials.getAccessToken());
+            }
+        }
 
-		catch(Exception e)
-		{
-			RequestBot.getLogger().error("Failed to get new token: {}", e.toString());
-		}
+        catch(Exception e)
+        {
+            RequestBot.getLogger().error("Failed to get new token: {}", e.toString());
+        }
 
-	}
+    }
+
+    public static void startSpotifyRefresh()
+    {
+        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(ScheduledTasks::refreshToken, 0, 60, TimeUnit.MINUTES);
+    }
 }

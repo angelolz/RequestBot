@@ -119,9 +119,6 @@ public class RequestBot
 			.setActivity(Activity.playing("loading!! | h!help"))
 			.addEventListeners(client.build(), new JDAListener(ownerId))
 			.build();
-
-			//init timed tasks
-			ScheduledTasks.init();
 		}
 
 		catch(Exception e)
