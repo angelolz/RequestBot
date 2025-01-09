@@ -35,7 +35,7 @@ public class RequestBot
 
 	//discord
 	private static final String prefix = "r!";
-	private static final String version = "1.4.4";
+	private static final String version = "1.4.5";
 	private static String botToken, ownerId;
 
 	//twitch
