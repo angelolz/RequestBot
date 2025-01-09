@@ -15,7 +15,6 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import schedulers.ScheduledTasks;
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.SpotifyHttpManager;
 
@@ -81,17 +80,17 @@ public class RequestBot
 			logger.info("Connected to database successfully!");
 
 			/*   twitch bot   */
-			OAuth2Credential credential = new OAuth2Credential("twitch", twchOAuth);
-			twitchClient = TwitchClientBuilder.builder()
-					.withEnableHelix(true)
-					.withEnableChat(true)
-					.withChatAccount(credential)
-					.build();
+//			OAuth2Credential credential = new OAuth2Credential("twitch", twchOAuth);
+//			twitchClient = TwitchClientBuilder.builder()
+//					.withEnableHelix(true)
+//					.withEnableChat(true)
+//					.withChatAccount(credential)
+//					.build();
+//
+//			SimpleEventHandler eventHandler = twitchClient.getEventManager().getEventHandler(SimpleEventHandler.class);
+//			new ChatListener(eventHandler);
 
-			SimpleEventHandler eventHandler = twitchClient.getEventManager().getEventHandler(SimpleEventHandler.class);
-			new ChatListener(eventHandler);
-
-			logger.info("Finished loading Twitch API and joined angelolz1's channel.");
+//			logger.info("Finished loading Twitch API and joined angelolz1's channel.");
 
 			/*   discord bot   */
 			//create command builders and listeners

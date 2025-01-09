@@ -1,7 +1,4 @@
 CREATE DATABASE RequestBot;
-CREATE TABLE Tweets (
-	tweet_id BIGINT NOT NULL
-);
 
 CREATE TABLE Requests (
 	uri VARCHAR(25) NOT NULL,
