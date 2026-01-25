@@ -110,7 +110,8 @@ public class RequestBot
 					new View(),
 					new Set(),
 					new Recent(),
-					new NowPlaying());
+					new NowPlaying(),
+					new Queue());
 
 			//discord bot builder
 			JDABuilder.createDefault(botToken)

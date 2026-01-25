@@ -16,6 +16,9 @@ public class Queue extends Command
     @Override
     protected void execute(CommandEvent commandEvent)
     {
+        if(!commandEvent.getMessage().getGuild().getId().equals("690413539659087902"))
+            return;
+
         if(RequestBot.getSpotifyApi().getAccessToken() == null)
         {
             commandEvent.reply("❌ | Sorry, I haven't been set up with a Spotify token yet! Let Angel know about this!");
